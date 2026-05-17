@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorpresa 💖</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Para vos Milagros 💖</h1>
+    <p class="description">Gracias por aparecer en mi vida 💖</p>
+
+    <!-- PLAYER -->
+    <section class="music-player">
+      <div class="player-top">
+        <img src="images/foto3.jpeg" alt="Milagros">
+        <div>
+          <div id="song-title">Cargando...</div>
+          <div class="subtitle" id="track-subtitle" style="font-size:14px; margin:6px 0 0; color:#ffd6e7; opacity:.85;">Reproduciendo como Spotify ✨</div>
+        </div>
+      </div>
+
+
+      <div class="controls">
+        <button type="button" id="prev-btn" aria-label="Canción anterior">⏮️</button>
+        <button type="button" id="play-btn" aria-label="Play/Pausa">⏯️</button>
+        <button type="button" id="next-btn" aria-label="Siguiente">⏭️</button>
+      </div>
+
+      <input id="progress" type="range" min="0" max="100" value="0" aria-label="Progreso">
+      <audio id="audio" preload="metadata"></audio>
+    </section>
+
+    <!-- FOTOS + FRASES -->
+    <div class="gallery" id="gallery" style="display:none">
+
+
+
+      <div class="gallery-wrap">
+        <div class="gallery-grid">
+          <article class="gallery-card">
+            <div class="sparkle-layer"></div>
+            <img src="images/foto1.jpeg" alt="Foto 1">
+            <div class="gallery-caption">“Me gusta tu risa y el brillo que dejás en todo.” ✨</div>
+          </article>
+          <article class="gallery-card">
+            <div class="sparkle-layer"></div>
+            <img src="images/foto2.jpeg" alt="Foto 2">
+            <div class="gallery-caption">“Tus ojos me cuentan cosas sin decir nada.” 💖</div>
+          </article>
+          <article class="gallery-card">
+            <div class="sparkle-layer"></div>
+            <img src="images/foto3.jpeg" alt="Foto 3">
+            <div class="gallery-caption">“Hay momentos que se quedan… y vos te quedaste.” 🌸</div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAJE (cartas) -->
+  <div class="message-box" id="message" style="display:none;"></div>
+
+    <!-- BOTONES CARTA ÚNICA -->
+
+    <div class="section-title" id="section-title" style="font-size:20px; color:#ffdbe8; margin-top:25px; margin-bottom:14px;">
+      Elegí una carta ✨
+    </div>
+
+    <div class="buttons" id="buttons">
+
+            <button class="card-btn" type="button" data-msg="1">Carta 1 ✨</button>
+            <button class="card-btn" type="button" data-msg="2">Carta 2 🌙</button>
+            <button class="card-btn" type="button" data-msg="3">Carta 3 💖</button>
+            <button class="secret" type="button" id="ver-fotos">Ver fotos especiales</button>
+            <div style="margin-top:14px; display:none" id="back-wrap">
+              <button class="secret" type="button" id="volver">← Volver</button>
+            </div>
+
+        </div>
+
+        <!-- CONTADOR -->
+        <div class="counter-box" id="counter">Cargando contador...</div>
+
+        <div class="theme-switcher">
+          <button class="theme-btn theme-pink" type="button" id="theme-pink">Tema Rosa</button>
+          <button class="theme-btn theme-purple" type="button" id="theme-purple">Tema Violeta</button>
+        </div>
+
+        <!-- TIMELINE -->
+
+        <div class="timeline" id="timeline">
+          <div class="timeline-item">
+            <div class="dot"></div>
+            <div class="content">
+              <h3>El comienzo</h3>
+              <p>Empezamos con charlas y miradas que decían más de lo que hablábamos. 💖</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="dot"></div>
+            <div class="content">
+              <h3>Los recuerdos</h3>
+              <p>Cada foto guarda una emoción: ternura, calma y una chispa única. 🌸</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="dot"></div>
+            <div class="content">
+              <h3>Lo que viene</h3>
+              <p>Seguir construyendo momentos lindos… paso a paso. ✨</p>
+            </div>
+          </div>
+        </div>
+
+  </div>
+
+
+  <script src="script.js"></script>
+  <script src="timeline_particles.js"></script>
+
+</body>
+</html>
+
+
+

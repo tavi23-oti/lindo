@@ -1,0 +1,298 @@
+<!-- sorpresa.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>Sorpresa 💖</title>
+
+    <link rel="stylesheet"
+    href="style.css">
+
+</head>
+
+<body>
+
+    <!-- Música: se mantiene la misma reproducción desde index.html (no autoplay aquí) -->
+    <div style="display:none">
+        <audio id="sorpresa-audio" preload="metadata" loop>
+            <source src="assets/music.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+
+    <div class="container">
+
+        <div class="page-nav">
+            <button class="secret" type="button" id="volver">← Volver</button>
+        </div>
+
+        <h1 class="title">
+            Nuestra noche 🌧️💖
+        </h1>
+
+
+        <p class="description">
+
+
+            Un recuerdo lindo que nunca voy a olvidar 🌸
+
+        </p>
+
+        <div class="special-gallery" style="display:flex">
+
+
+
+
+            <img src="images/foto1.jpeg">
+
+            <img src="images/foto2.jpeg">
+
+            <img src="images/foto3.jpeg">
+
+        </div>
+
+        <!-- PLAYER (misma playlist que index.html) -->
+        <section class="music-player" id="music-player-2">
+            <div class="player-top">
+                <img src="images/foto3.jpeg" alt="Milagros">
+                <div>
+                    <div id="song-title-2">Cargando...</div>
+                    <div class="subtitle" id="track-subtitle-2" style="font-size:14px; margin:6px 0 0; color:#ffd6e7; opacity:.85;">Reproduciendo como Spotify ✨</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button type="button" id="prev-btn-2" aria-label="Canción anterior">⏮️</button>
+                <button type="button" id="play-btn-2" aria-label="Play/Pausa">⏯️</button>
+                <button type="button" id="next-btn-2" aria-label="Siguiente">⏭️</button>
+            </div>
+
+            <input id="progress-2" type="range" min="0" max="100" value="0" aria-label="Progreso">
+            <audio id="audio-2" preload="metadata"></audio>
+        </section>
+
+        <div class="message-box">
+
+
+            🌧️ Todavía me acuerdo de esa noche de frío y lluvia.
+
+            El clima,
+            el ambiente
+            y todo lo que se sentía en ese momento quedó guardado en mi cabeza de una manera muy especial 💖
+
+            A veces los momentos más simples terminan siendo los más lindos.
+
+            Y esa noche fue una de esas que sinceramente no quiero olvidar nunca.
+
+            Me gustó muchísimo compartir ese momento con vos,
+            hablar,
+            mirarte
+            y simplemente estar ahí 🌸
+
+            Fue una de esas noches que te dejan una sensación linda en el corazón.
+
+            Y aunque recién nos estamos conociendo,
+            siento que fue uno de esos recuerdos que voy a guardar muchísimo tiempo ✨
+
+        </div>
+
+    </div>
+
+    <script>
+        // ============ PLAYER + CONTINUIDAD ============
+        const songs = [
+            { name: "Nuestra canción 🌸", path: "assets/music.mp3" },
+            { name: "Pensando en vos 💖", path: "assets/music1.mp3" },
+            { name: "Momentos lindos ✨", path: "assets/music2.mp3" },
+            { name: "Milagros 🍷", path: "assets/music3.mp3" },
+            { name: "Forever 🌸", path: "assets/music4.mp3" },
+        ];
+
+        const MUSIC_KEY = "sorpresa_music_state_v1";
+
+        const audio = document.getElementById("audio-2");
+        const title = document.getElementById("song-title-2");
+        const progress = document.getElementById("progress-2");
+
+        let songIndex = 0;
+
+        function loadSong() {
+            if (!audio || !title) return;
+            audio.src = songs[songIndex].path;
+            title.textContent = songs[songIndex].name;
+        }
+
+        function playPause() {
+            if (!audio) return;
+            if (audio.paused) audio.play().catch(() => {});
+            else audio.pause();
+        }
+
+        function nextSong() {
+            songIndex++;
+            if (songIndex >= songs.length) songIndex = 0;
+            loadSong();
+            audio?.play().catch(() => {});
+        }
+
+        function prevSong() {
+            songIndex--;
+            if (songIndex < 0) songIndex = songs.length - 1;
+            loadSong();
+            audio?.play().catch(() => {});
+        }
+
+        function saveMusicState() {
+            if (!audio) return;
+            try {
+                const state = {
+                    songIndex,
+                    currentTime: audio.currentTime || 0,
+                    isPlaying: !audio.paused && !audio.ended,
+                };
+                localStorage.setItem(MUSIC_KEY, JSON.stringify(state));
+            } catch (_) {}
+        }
+
+        function restoreMusicState() {
+            if (!audio) return false;
+            try {
+                const raw = localStorage.getItem(MUSIC_KEY);
+                if (!raw) return false;
+                const state = JSON.parse(raw);
+
+                if (Number.isFinite(state.songIndex)) {
+                    songIndex = state.songIndex;
+                    loadSong();
+                }
+
+                const t = Number(state.currentTime);
+                if (Number.isFinite(t)) {
+                    const setTime = () => {
+                        audio.currentTime = Math.max(0, t);
+                    };
+                    if (audio.readyState >= 1) setTime();
+                    else audio.addEventListener("loadedmetadata", setTime, { once: true });
+                }
+
+                const shouldPlay = !!state.isPlaying;
+                if (shouldPlay) audio.play().catch(() => {});
+
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Botones
+        document.getElementById("prev-btn-2")?.addEventListener("click", prevSong);
+        document.getElementById("next-btn-2")?.addEventListener("click", nextSong);
+        document.getElementById("play-btn-2")?.addEventListener("click", playPause);
+
+        audio?.addEventListener("timeupdate", () => {
+            if (!progress || !audio.duration) return;
+            progress.value = (audio.currentTime / audio.duration) * 100;
+        });
+
+        progress?.addEventListener("input", () => {
+            if (!audio.duration) return;
+            audio.currentTime = (progress.value / 100) * audio.duration;
+            saveMusicState();
+        });
+
+        // Automático al terminar
+        audio?.addEventListener("ended", () => {
+            nextSong();
+            saveMusicState();
+        });
+
+        // Guardar estado en salida
+        window.addEventListener("beforeunload", saveMusicState);
+        window.addEventListener("pagehide", saveMusicState);
+        audio?.addEventListener("play", saveMusicState);
+        audio?.addEventListener("pause", saveMusicState);
+
+        // Volver
+        document.getElementById("volver")?.addEventListener("click", () => {
+            saveMusicState();
+            window.location.href = "index.html";
+        });
+
+        loadSong();
+        restoreMusicState();
+
+        // ============ FLORES ANIMADAS ============
+        function createPetal(){
+
+
+
+
+
+            const petal =
+            document.createElement("div");
+
+            petal.classList.add("petal");
+
+            petal.innerHTML = "🌸";
+
+            petal.style.left =
+            Math.random() * 100 + "vw";
+
+            petal.style.animationDuration =
+            (Math.random() * 5 + 5) + "s";
+
+            document.body.appendChild(petal);
+
+            setTimeout(()=>{
+                petal.remove();
+            },10000);
+
+        }
+
+        setInterval(createPetal,500);
+
+        document.addEventListener(
+        "mousemove",
+        (e)=>{
+
+            const heart =
+            document.createElement("div");
+
+            heart.innerHTML = "💖";
+
+            heart.style.position = "fixed";
+
+            heart.style.left =
+            e.clientX + "px";
+
+            heart.style.top =
+            e.clientY + "px";
+
+            heart.style.pointerEvents =
+            "none";
+
+            heart.style.fontSize = "20px";
+
+            heart.style.animation =
+            "fadeOut 1s forwards";
+
+            document.body.appendChild(heart);
+
+            setTimeout(()=>{
+                heart.remove();
+            },1000);
+
+        });
+
+    </script>
+
+</body>
+
+</html>
